@@ -13,6 +13,6 @@ def autoclicker():
         pyautogui.click()
         time.sleep(interval)
 
-interval = 0.5  # Intervallo di tempo tra i clic in secondi
-duration = 10  # Durata totale in secondi
+interval = 0.5 
+duration = 10  
 autoclicker()

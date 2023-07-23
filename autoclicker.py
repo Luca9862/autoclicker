@@ -17,7 +17,6 @@ def start_autoclicker():
     if stop_event and not stop_event.is_set():
         print("Autoclicker già in esecuzione.")
         return
-
     selected_interval = float(option_var_interval.get())
     stop_event = threading.Event()
     threading.Thread(target=autoclicker, args=(selected_interval,)).start()
@@ -28,25 +27,25 @@ def stop_autoclicker():
         stop_event.set()
         print("Autoclicker fermato")
 
-# Crea la finestra principale
+#crea la finestra principale
 root = tk.Tk()
 root.title("AUTOCLICKER by Luca Canali")
 root.geometry("350x200")
 
-# Opzioni per il menu a tendina
+#opzioni per il menu a tendina
 options = [str(i/10) for i in range(1, 101)]
 
-# Variabile per memorizzare l'intervallo selezionato
+#variabile per memorizzare l'intervallo selezionato
 option_var_interval = tk.StringVar(root)
-option_var_interval.set(options[4])  # Imposta il valore predefinito
+option_var_interval.set(options[4])
 
-# Crea il menu a tendina
+#crea il menu a tendina
 option_menu = tk.OptionMenu(root, option_var_interval, *options)
 option_menu.grid(row=1, column=0, padx=20, pady=10)
 
+#crea bottoni start/stop
 button_start = tk.Button(text="Start", command=start_autoclicker)
 button_start.grid(row=2, column=0, sticky="WE")
-
 button_stop = tk.Button(text="Stop", command=stop_autoclicker)
 button_stop.grid(row=3, column=0, sticky="WE")
 

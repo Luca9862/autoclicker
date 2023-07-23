@@ -32,6 +32,9 @@ root = tk.Tk()
 root.title("AUTOCLICKER by Luca Canali")
 root.geometry("350x200")
 
+label = tk.Label(text="Interval: (seconds)", padx=20, pady=10)
+label.grid(row=0, column=0)
+
 #opzioni per il menu a tendina
 options = [str(i/10) for i in range(1, 101)]
 
@@ -41,7 +44,7 @@ option_var_interval.set(options[4])
 
 #crea il menu a tendina
 option_menu = tk.OptionMenu(root, option_var_interval, *options)
-option_menu.grid(row=1, column=0, padx=20, pady=10)
+option_menu.grid(row=1, column=0)
 
 #crea bottoni start/stop
 button_start = tk.Button(text="Start", command=start_autoclicker)

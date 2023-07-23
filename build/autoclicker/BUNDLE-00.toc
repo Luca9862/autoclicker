@@ -1,3 +1,0 @@
-([('autoclicker',
-   '/Users/lucacanali/Documents/GitHub/autoclicker/dist/autoclicker',
-   'EXECUTABLE')],)

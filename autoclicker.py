@@ -4,54 +4,52 @@ import time
 import tkinter as tk
 import threading
 
-def autoclicker(interval, duration):
-    end_time = time.time() + duration
-    while time.time() < end_time:
+stop_event = None
+
+def autoclicker(interval: float):
+    global stop_event
+    while not stop_event.is_set():
         pyautogui.click()
         time.sleep(interval)
 
-def autoclickerNoDuration(interval: float):
-    while True:
-        pyautogui.click()
-        time.sleep(interval)
+def start_autoclicker():
+    global stop_event
+    if stop_event and not stop_event.is_set():
+        print("Autoclicker già in esecuzione.")
+        return
 
-'''def start_autoclicker():
-    interval_str = interval_input.get().strip()
-    if interval_str:
-        interval_milliseconds = float(interval_str)
-        interval_seconds = int(interval_milliseconds * 1000)
-        while True:
-            threading.Thread(target=autoclickerNoDuration, args=(interval_seconds,)).start()
-    else:
-        print("Inserisci un intervallo valido in secondi.")'''
+    selected_interval = float(option_var_interval.get())
+    stop_event = threading.Event()
+    threading.Thread(target=autoclicker, args=(selected_interval,)).start()
 
-def on_option_changed(*args):
-    selected_number.set(option_var_interval.get())
+def stop_autoclicker():
+    global stop_event
+    if stop_event and not stop_event.is_set():
+        stop_event.set()
+        print("Autoclicker fermato")
 
 # Crea la finestra principale
 root = tk.Tk()
 root.title("AUTOCLICKER by Luca Canali")
 root.geometry("350x200")
 
-# Variabile per memorizzare il numero selezionato
-selected_number = tk.DoubleVar()
-
 # Opzioni per il menu a tendina
 options = [str(i/10) for i in range(1, 101)]
 
-# Crea il menu a tendina
+# Variabile per memorizzare l'intervallo selezionato
 option_var_interval = tk.StringVar(root)
 option_var_interval.set(options[4])  # Imposta il valore predefinito
-option_var_interval.trace("w", on_option_changed)  # Aggiungi una callback quando l'opzione cambia
+
+# Crea il menu a tendina
 option_menu = tk.OptionMenu(root, option_var_interval, *options)
 option_menu.grid(row=1, column=0, padx=20, pady=10)
 
-#number = selected_number.get()
-number = option_var_interval.get()
-print(number)
-button_start = tk.Button(text="Start", command=lambda: autoclickerNoDuration(number))
+button_start = tk.Button(text="Start", command=start_autoclicker)
 button_start.grid(row=2, column=0, sticky="WE")
 
-button_stop = tk.Button(text="Stop")
+button_stop = tk.Button(text="Stop", command=stop_autoclicker)
 button_stop.grid(row=3, column=0, sticky="WE")
+
 root.mainloop()
+
+
